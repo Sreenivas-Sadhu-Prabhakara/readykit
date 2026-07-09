@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --deep:    #0E2A2B;
+    --surface: #14383A;
+    --line:    #26595C;
+    --paper:   #F3F6F2;
+    --mist:    #B9CBC6;
+    --signal:  #F6A21E;
+    --go:      #4FB477;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 1200px; height: 630px;
+    overflow: hidden;
+  }
+  body {
+    position: relative;
+    background:
+      radial-gradient(1200px 620px at 82% -12%, rgba(79,180,119,0.14), transparent 60%),
+      radial-gradient(900px 520px at 4% 8%, rgba(246,162,30,0.08), transparent 55%),
+      linear-gradient(180deg, #0c2526 0%, #0E2A2B 100%);
+    font-family: var(--sans);
+    color: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* subtle topographic contour lines — the readykit signature */
+  .contour {
+    position: absolute; inset: 0;
+    width: 1200px; height: 630px;
+    opacity: 0.5;
+  }
+  .contour path { fill: none; stroke: var(--line); stroke-width: 1.4; }
+
+  .frame {
+    position: absolute; inset: 0;
+    padding: 84px 90px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* wordmark */
+  .brand { display: flex; align-items: center; gap: 22px; }
+  .mark {
+    width: 78px; height: 78px; border-radius: 19px;
+    background: var(--deep);
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 44px -22px rgba(0,0,0,0.7);
+  }
+  .wordmark {
+    font-size: 66px; font-weight: 800; letter-spacing: -0.035em;
+    line-height: 1; color: var(--paper);
+  }
+
+  .headline { max-width: 900px; }
+  .headline h1 {
+    font-size: 58px; font-weight: 800; letter-spacing: -0.03em;
+    line-height: 1.1; color: var(--paper);
+  }
+  .headline .and { color: var(--go); }
+  .headline p {
+    margin-top: 24px;
+    font-size: 30px; font-weight: 500; letter-spacing: -0.01em;
+    color: var(--mist); line-height: 1.35; max-width: 34ch;
+  }
+
+  /* chip row */
+  .chips { display: flex; align-items: center; gap: 13px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 11px;
+    padding: 12px 20px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(9,28,29,0.4);
+    font-size: 23px; font-weight: 600; letter-spacing: -0.01em;
+    color: var(--mist);
+  }
+  .chip .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .chip .dot--amber { background: var(--signal); box-shadow: 0 0 0 4px rgba(246,162,30,0.14); }
+  .chip .dot--green { background: var(--go); box-shadow: 0 0 0 4px rgba(79,180,119,0.16); }
+</style>
+</head>
+<body>
+  <!-- topographic contour field -->
+  <svg class="contour" viewBox="0 0 1200 630" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M-20 120 C 200 60, 380 60, 600 120 S 1000 180, 1220 120"/>
+    <path d="M-20 190 C 200 130, 380 130, 600 190 S 1000 250, 1220 190"/>
+    <path d="M-20 260 C 200 200, 380 200, 600 260 S 1000 320, 1220 260"/>
+    <path d="M-20 330 C 200 270, 380 270, 600 330 S 1000 390, 1220 330"/>
+    <path d="M-20 400 C 200 340, 380 340, 600 400 S 1000 460, 1220 400"/>
+    <path d="M-20 470 C 200 410, 380 410, 600 470 S 1000 530, 1220 470"/>
+    <path d="M-20 540 C 200 480, 380 480, 600 540 S 1000 600, 1220 540"/>
+  </svg>
+
+  <div class="frame">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="#0E2A2B"/>
+        <path d="M6 20c4-6 6-6 10 0s6 6 10 0" fill="none" stroke="#4FB477" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M6 13c4-6 6-6 10 0s6 6 10 0" fill="none" stroke="#F6A21E" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <span class="wordmark">readykit</span>
+    </div>
+
+    <div class="headline">
+      <h1>Know exactly what to pack&nbsp;—<br><span class="and">and why.</span></h1>
+      <p>A disaster-prep checklist for your exact household and hazards.</p>
+    </div>
+
+    <div class="chips">
+      <span class="chip"><span class="dot dot--green"></span>region-aware</span>
+      <span class="chip"><span class="dot dot--amber"></span>real quantities</span>
+      <span class="chip"><span class="dot dot--green"></span>printable</span>
+      <span class="chip"><span class="dot dot--amber"></span>offline</span>
+    </div>
+  </div>
+</body>
+</html>
