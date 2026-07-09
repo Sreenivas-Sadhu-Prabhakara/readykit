@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+  <title>readykit — know exactly what to pack, and why</title>
+  <meta name="description" content="A region-aware disaster-preparedness checklist generator. Tailored to your household and hazards, with real quantities and a reason for every item. Works fully offline.">
+  <meta name="color-scheme" content="dark">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E2A2B'/%3E%3Cpath d='M6 20c4-6 6-6 10 0s6 6 10 0' fill='none' stroke='%234FB477' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpath d='M6 13c4-6 6-6 10 0s6 6 10 0' fill='none' stroke='%23F6A21E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+</head>
+<body>
+  <a class="skip-link" href="#kit">Skip to my checklist</a>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="hero__contour" aria-hidden="true">
+      <svg class="contour" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMid slice" role="presentation">
+        <g class="contour__lines"></g>
+      </svg>
+    </div>
+
+    <div class="hero__inner">
+      <p class="eyebrow">Disaster-preparedness &middot; region-aware &middot; offline</p>
+      <h1 class="hero__title">Know exactly what to pack&mdash;<span class="hero__accent">and why.</span></h1>
+      <p class="hero__lede">
+        readykit builds a checklist for <em>your</em> household and <em>your</em> hazards, with real
+        quantities and a one-line reason for every item. No accounts, no network&mdash;useful even when
+        the power and signal are out.
+      </p>
+
+      <!-- ============ CONTROLS ============ -->
+      <form class="controls" id="controls" novalidate>
+        <fieldset class="panel">
+          <legend class="panel__legend">Region</legend>
+          <div class="segmented" role="radiogroup" aria-label="Region preset">
+            <label class="seg">
+              <input type="radio" name="region" value="ph" checked>
+              <span>Philippines</span>
+            </label>
+            <label class="seg">
+              <input type="radio" name="region" value="generic">
+              <span>Generic / Global</span>
+            </label>
+          </div>
+          <p class="panel__hint" id="regionHint">Presets tune defaults and local guidance. You can override any hazard below.</p>
+        </fieldset>
+
+        <fieldset class="panel">
+          <legend class="panel__legend">Hazards to plan for</legend>
+          <div class="chips" id="hazards">
+            <label class="chip"><input type="checkbox" name="hazard" value="typhoon" checked><span>Typhoon &amp; flooding</span></label>
+            <label class="chip"><input type="checkbox" name="hazard" value="earthquake" checked><span>Earthquake</span></label>
+            <label class="chip"><input type="checkbox" name="hazard" value="volcanic"><span>Volcanic ashfall</span></label>
+            <label class="chip"><input type="checkbox" name="hazard" value="fire"><span>Fire</span></label>
+            <label class="chip"><input type="checkbox" name="hazard" value="outage"><span>Extended power outage</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="panel panel--wide">
+          <legend class="panel__legend">Household</legend>
+          <div class="counts">
+            <div class="count"><label for="adults">Adults</label><input type="number" id="adults" name="adults" min="0" max="30" step="1" value="2" inputmode="numeric"></div>
+            <div class="count"><label for="children">Children <span class="count__sub">1&ndash;12y</span></label><input type="number" id="children" name="children" min="0" max="30" step="1" value="1" inputmode="numeric"></div>
+            <div class="count"><label for="infants">Infants <span class="count__sub">&lt;1y</span></label><input type="number" id="infants" name="infants" min="0" max="10" step="1" value="0" inputmode="numeric"></div>
+            <div class="count"><label for="elderly">Elderly</label><input type="number" id="elderly" name="elderly" min="0" max="20" step="1" value="0" inputmode="numeric"></div>
+            <div class="count"><label for="pets">Pets</label><input type="number" id="pets" name="pets" min="0" max="20" step="1" value="0" inputmode="numeric"></div>
+          </div>
+          <div class="toggles">
+            <label class="toggle"><input type="checkbox" name="meds"><span>Someone needs daily prescription medication</span></label>
+            <label class="toggle"><input type="checkbox" name="mobility"><span>Someone has limited mobility</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="panel">
+          <legend class="panel__legend">Days of supply</legend>
+          <div class="segmented segmented--days" role="radiogroup" aria-label="Days of supply">
+            <label class="seg"><input type="radio" name="days" value="3" checked><span>3 days</span></label>
+            <label class="seg"><input type="radio" name="days" value="7"><span>7 days</span></label>
+            <label class="seg"><input type="radio" name="days" value="14"><span>14 days</span></label>
+          </div>
+          <p class="panel__hint">3 days is the common minimum. Choose 7&ndash;14 if roads or resupply may be cut off.</p>
+        </fieldset>
+
+        <div class="controls__action">
+          <button type="submit" class="btn btn--primary" id="buildBtn">Build my kit</button>
+          <span class="controls__note">Everything stays on this device.</span>
+        </div>
+      </form>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ STATUS ROW ============ -->
+    <section class="status" id="kit" aria-labelledby="statusHeading">
+      <div class="status__inner">
+        <div class="status__meter">
+          <div class="meter">
+            <div class="meter__track">
+              <div class="meter__fill" id="meterFill"></div>
+            </div>
+            <div class="meter__readout">
+              <span class="meter__pct" id="meterPct">0%</span>
+              <span class="meter__label" id="meterLabel">packed &middot; <span id="meterCount">0 of 0</span> items</span>
+            </div>
+          </div>
+          <h2 class="status__heading" id="statusHeading">Your readiness</h2>
+        </div>
+        <div class="status__actions">
+          <button type="button" class="btn btn--ghost" id="printBtn">Print checklist</button>
+          <button type="button" class="btn btn--ghost" id="resetBtn">Reset checks</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SUMMARY (also print header) ============ -->
+    <section class="summary" id="summary" aria-live="polite"></section>
+
+    <!-- ============ CHECKLIST ============ -->
+    <section class="kit" id="checklist" aria-label="Preparedness checklist"></section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="foot">
+    <div class="foot__inner">
+      <p class="foot__disclaimer">
+        <strong>Not professional advice.</strong> readykit gives general preparedness guidance for education only.
+        Quantities are rough guidelines&mdash;always follow your local civil-defense and disaster authorities
+        <span class="foot__ph">(in the Philippines: NDRRMC and PAGASA)</span>.
+      </p>
+      <p class="foot__meta">
+        <span>Works 100% offline</span><span class="foot__dot">&middot;</span>
+        <span>No network, no accounts</span><span class="foot__dot">&middot;</span>
+        <span>MIT&nbsp;License</span><span class="foot__dot">&middot;</span>
+        <span>&copy; 2026 Sreenivas&nbsp;Sadhu&nbsp;Prabhakara</span>
+      </p>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
